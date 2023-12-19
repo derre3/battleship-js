@@ -70,3 +70,57 @@ test('place vertical ship size 5 at grid edge [3,7]', () => {
   expect(board.grid[3][4]).toBe(ship);
   expect(board.grid[3][3]).toBe(ship);
 });
+
+test('receive attack in empty space', () => {
+  const board = Gameboard(8);
+  board.receiveAttack([3, 3]);
+  board.receiveAttack([4, 3]);
+  expect(board.grid[3][3]).toBe(1);
+  expect(board.grid[4][3]).toBe(1);
+  expect(board.missedShots[0]).toEqual([3, 3]);
+  expect(board.missedShots[1]).toEqual([4, 3]);
+});
+
+test('receive attack in populated space', () => {
+  const board = Gameboard(8);
+  const ship = {
+    info: {
+      size: 3,
+      hitCount: 0,
+    },
+
+    hit: () => {
+      ship.info.hitCount += 1;
+    },
+  };
+  board.placeShipAt(ship, [3, 3]);
+  board.receiveAttack([3, 3]);
+  board.receiveAttack([4, 3]);
+  expect(board.grid[3][3]).toBe(1);
+  expect(board.grid[4][3]).toBe(1);
+  expect(board.grid[5][3].info.hitCount).toBe(2);
+});
+
+test('sink all ships', () => {
+  const board = Gameboard(8);
+  const ship = {
+    info: {
+      size: 1,
+      hitCount: 0,
+      sunk: false,
+    },
+    isSunk: () => {
+      if (ship.info.hitCount >= ship.info.size) ship.info.sunk = true;
+      else ship.info.sunk = false;
+    },
+    hit: () => {
+      ship.info.hitCount += 1;
+      ship.isSunk();
+    },
+  };
+  board.placeShipAt(ship, [3, 3]);
+  board.placeShipAt(ship, [7, 3]);
+  board.receiveAttack([3, 3]);
+  board.receiveAttack([7, 3]);
+  expect(board.ships.length).toBe(0);
+});
