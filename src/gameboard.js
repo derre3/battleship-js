@@ -7,8 +7,13 @@ function Gameboard(gridSize) {
       grid[i][j] = 0;
     }
   }
-  const missedShots = [];
-  const ships = [];
+
+  const info = {
+    hits: [],
+    misses: [],
+    ships: [],
+    grid,
+  };
 
   //   there needs to be a limit to the X and Y axis
   // if (pos + shipSize) > boardSize place at (+edge - shipSize)
@@ -29,7 +34,7 @@ function Gameboard(gridSize) {
         grid[x + i][y] = ship;
       } else grid[x][y + i] = ship;
     }
-    ships.push(true);
+    info.ships.push(true);
   };
 
   // Gameboards should have a receiveAttack function that takes a pair of coordinates, determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
@@ -39,16 +44,17 @@ function Gameboard(gridSize) {
     const x = pos[0];
     const y = pos[1];
     if (grid[x][y] === 0) {
-      missedShots.push([x, y]);
+      info.misses.push([x, y]);
       grid[x][y] = 1;
     } else if (grid[x][y] !== 1 && grid[x][y] !== 0) {
       grid[x][y].hit();
-      if (grid[x][y].info.sunk === true) ships.pop();
+      info.hits.push([x, y]);
+      if (grid[x][y].info.sunk === true) info.ships.pop();
       grid[x][y] = 1;
     } else throw new Error('invalid-target');
   };
 
-  return { grid, missedShots, ships, placeShipAt, receiveAttack };
+  return { info, placeShipAt, receiveAttack };
 }
 
 module.exports = {

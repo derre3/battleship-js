@@ -1,126 +1,86 @@
 const { Gameboard } = require('../gameboard');
+const { Ship } = require('../ship');
 
 test('board size = 8x8', () => {
-  expect(Gameboard(8).grid[0].length).toBe(8);
-  expect(Gameboard(8).grid[7].length).toBe(8);
+  expect(Gameboard(8).info.grid[0].length).toBe(8);
+  expect(Gameboard(8).info.grid[7].length).toBe(8);
 });
 
 test('place ship at coords [5,2]', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 1,
-    },
-  };
+  const ship = Ship(1);
   board.placeShipAt(ship, [5, 2]);
-  expect(board.grid[5][2]).toBe(ship);
+  expect(board.info.grid[5][2]).toBe(ship);
 });
 
 test('place ship size 3 at coords [3,3]', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 3,
-    },
-  };
+  const ship = Ship(3);
   board.placeShipAt(ship, [3, 3]);
-  expect(board.grid[3][3]).toBe(ship);
-  expect(board.grid[4][3]).toBe(ship);
-  expect(board.grid[5][3]).toBe(ship);
+  expect(board.info.grid[3][3]).toBe(ship);
+  expect(board.info.grid[4][3]).toBe(ship);
+  expect(board.info.grid[5][3]).toBe(ship);
 });
 
 test('place vertical ship size 3 at coords [3,3]', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 3,
-    },
-  };
+  const ship = Ship(3);
   board.placeShipAt(ship, [3, 3], true);
-  expect(board.grid[3][3]).toBe(ship);
-  expect(board.grid[3][4]).toBe(ship);
-  expect(board.grid[3][5]).toBe(ship);
+  expect(board.info.grid[3][3]).toBe(ship);
+  expect(board.info.grid[3][4]).toBe(ship);
+  expect(board.info.grid[3][5]).toBe(ship);
 });
 
 test('place ship size 4 at grid edge [7,3]', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 4,
-    },
-  };
+  const ship = Ship(4);
   board.placeShipAt(ship, [7, 3]);
-  expect(board.grid[7][3]).toBe(ship);
-  expect(board.grid[6][3]).toBe(ship);
-  expect(board.grid[5][3]).toBe(ship);
-  expect(board.grid[4][3]).toBe(ship);
+  expect(board.info.grid[7][3]).toBe(ship);
+  expect(board.info.grid[6][3]).toBe(ship);
+  expect(board.info.grid[5][3]).toBe(ship);
+  expect(board.info.grid[4][3]).toBe(ship);
 });
 
 test('place vertical ship size 5 at grid edge [3,7]', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 5,
-    },
-  };
+  const ship = Ship(5);
   board.placeShipAt(ship, [3, 7], true);
-  expect(board.grid[3][7]).toBe(ship);
-  expect(board.grid[3][6]).toBe(ship);
-  expect(board.grid[3][5]).toBe(ship);
-  expect(board.grid[3][4]).toBe(ship);
-  expect(board.grid[3][3]).toBe(ship);
+  expect(board.info.grid[3][7]).toBe(ship);
+  expect(board.info.grid[3][6]).toBe(ship);
+  expect(board.info.grid[3][5]).toBe(ship);
+  expect(board.info.grid[3][4]).toBe(ship);
+  expect(board.info.grid[3][3]).toBe(ship);
 });
 
 test('receive attack in empty space', () => {
   const board = Gameboard(8);
   board.receiveAttack([3, 3]);
   board.receiveAttack([4, 3]);
-  expect(board.grid[3][3]).toBe(1);
-  expect(board.grid[4][3]).toBe(1);
-  expect(board.missedShots[0]).toEqual([3, 3]);
-  expect(board.missedShots[1]).toEqual([4, 3]);
+  expect(board.info.grid[3][3]).toBe(1);
+  expect(board.info.grid[4][3]).toBe(1);
+  expect(board.info.misses[0]).toEqual([3, 3]);
+  expect(board.info.misses[1]).toEqual([4, 3]);
 });
 
 test('receive attack in populated space', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 3,
-      hitCount: 0,
-    },
-
-    hit: () => {
-      ship.info.hitCount += 1;
-    },
-  };
+  const ship = Ship(3);
   board.placeShipAt(ship, [3, 3]);
   board.receiveAttack([3, 3]);
   board.receiveAttack([4, 3]);
-  expect(board.grid[3][3]).toBe(1);
-  expect(board.grid[4][3]).toBe(1);
-  expect(board.grid[5][3].info.hitCount).toBe(2);
+  expect(board.info.grid[3][3]).toBe(1);
+  expect(board.info.grid[4][3]).toBe(1);
+  expect(board.info.grid[5][3].info.hitCount).toBe(2);
 });
 
 test('sink all ships', () => {
   const board = Gameboard(8);
-  const ship = {
-    info: {
-      size: 1,
-      hitCount: 0,
-      sunk: false,
-    },
-    isSunk: () => {
-      if (ship.info.hitCount >= ship.info.size) ship.info.sunk = true;
-      else ship.info.sunk = false;
-    },
-    hit: () => {
-      ship.info.hitCount += 1;
-      ship.isSunk();
-    },
-  };
+  const ship = Ship(1);
   board.placeShipAt(ship, [3, 3]);
   board.placeShipAt(ship, [7, 3]);
   board.receiveAttack([3, 3]);
   board.receiveAttack([7, 3]);
-  expect(board.ships.length).toBe(0);
+  expect(board.info.ships.length).toBe(0);
+  expect(board.info.hits[0]).toEqual([3, 3]);
+  expect(board.info.hits[1]).toEqual([7, 3]);
 });
