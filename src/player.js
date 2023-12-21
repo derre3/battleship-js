@@ -1,25 +1,21 @@
-// Players can take turns playing the game by attacking the enemy Gameboard.
-// The game is played against the computer, so make the ‘computer’ capable of making random plays. The AI does not have to be smart,
-// but it should know whether or not a given move is legal (i.e. it shouldn’t shoot the same coordinate twice).
 function Player(board) {
+  // the functions below are used by the AI while playing turns to pick an available cell
   const getRandomPos = () => [
     Math.floor(Math.random() * board.info.grid.length),
     Math.floor(Math.random() * board.info.grid.length),
   ];
-
-  const checkAvailability = (pos) => {
+  const isAttackValid = (pos) => {
     const x = pos[0];
     const y = pos[1];
     if (board.info.grid[x][y] === 1) return 'invalid';
     return 'valid';
   };
-
-  const attackValidPos = () => {
-    let validPos = getRandomPos();
-    while (checkAvailability(validPos) !== 'valid') {
-      validPos = getRandomPos();
+  const getValidPos = () => {
+    let pos = getRandomPos();
+    while (isAttackValid(pos) !== 'valid') {
+      pos = getRandomPos();
     }
-    board.receiveAttack(validPos);
+    return pos;
   };
 
   let isPlayerOneTurn = true;
@@ -28,16 +24,15 @@ function Player(board) {
     if (isPlayerOneTurn) return 1;
     return 2;
   };
-
+  // player 1 is human controlled but can be controlled as AI if no board coords (pos) is passed
+  // player 2 is the opposite and the same concept applies
   const playTurn = (pos) => {
-    if (checkTurn() === 1) {
-      if (pos) board.receiveAttack(pos);
-      if (!pos) attackValidPos();
-      isPlayerOneTurn = false;
+    if (!pos || checkTurn() === 2) {
+      board.receiveAttack(getValidPos());
     } else {
-      attackValidPos();
-      isPlayerOneTurn = true;
+      board.receiveAttack(pos);
     }
+    isPlayerOneTurn = !isPlayerOneTurn;
   };
   return { checkTurn, playTurn };
 }
