@@ -1,14 +1,15 @@
 const { Player } = require('../player');
 const { Gameboard } = require('../gameboard');
 
-test('player 1 and player 2 (AI controlled) taking turns', () => {
-  const board = Gameboard(8);
-  const playerObj = Player(board);
-  expect(playerObj.checkTurn()).toBe(1);
-  playerObj.playTurn([3, 3]);
-  expect(playerObj.checkTurn()).toBe(2);
-  playerObj.playTurn();
-  expect(playerObj.checkTurn()).toBe(1);
+test('players taking turns', () => {
+  const boardP1 = Gameboard(8);
+  const boardP2 = Gameboard(8);
+  const playerOne = Player(boardP2);
+  const playerTwo = Player(boardP1);
+  playerOne.playTurn([0, 0]);
+  playerTwo.playTurn([3, 3]);
+  expect(boardP1.info.grid[3][3]).toBe(1);
+  expect(boardP2.info.grid[0][0]).toBe(1);
 });
 
 test('AI always pick an available move', () => {

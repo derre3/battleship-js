@@ -18,23 +18,15 @@ function Player(board) {
     return pos;
   };
 
-  let isPlayerOneTurn = true;
-
-  const checkTurn = () => {
-    if (isPlayerOneTurn) return 1;
-    return 2;
-  };
-  // player 1 is human controlled but can be controlled as AI if no board coords (pos) is passed
-  // player 2 is the opposite and the same concept applies
+  // if board coords is not provided it will search for a valid cell to attack
   const playTurn = (pos) => {
-    if (!pos || checkTurn() === 2) {
+    if (!pos) {
       board.receiveAttack(getValidPos());
     } else {
       board.receiveAttack(pos);
     }
-    isPlayerOneTurn = !isPlayerOneTurn;
   };
-  return { checkTurn, playTurn };
+  return { playTurn };
 }
 
 module.exports = { Player };
