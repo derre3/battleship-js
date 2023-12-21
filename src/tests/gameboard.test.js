@@ -34,22 +34,15 @@ test('place vertical ship size 3 at coords [3,3]', () => {
 test('place ship size 4 at grid edge [7,3]', () => {
   const board = Gameboard(8);
   const ship = Ship(4);
-  board.placeShipAt(ship, [7, 3]);
-  expect(board.info.grid[7][3]).toBe(ship);
-  expect(board.info.grid[6][3]).toBe(ship);
-  expect(board.info.grid[5][3]).toBe(ship);
-  expect(board.info.grid[4][3]).toBe(ship);
+  expect(board.placeShipAt(ship, [7, 3])).toBe('invalid');
+  expect(board.info.grid[7][3]).toBe(0);
 });
 
 test('place vertical ship size 5 at grid edge [3,7]', () => {
   const board = Gameboard(8);
   const ship = Ship(5);
-  board.placeShipAt(ship, [3, 7], true);
-  expect(board.info.grid[3][7]).toBe(ship);
-  expect(board.info.grid[3][6]).toBe(ship);
-  expect(board.info.grid[3][5]).toBe(ship);
-  expect(board.info.grid[3][4]).toBe(ship);
-  expect(board.info.grid[3][3]).toBe(ship);
+  expect(board.placeShipAt(ship, [3, 7], true)).toBe('invalid');
+  expect(board.info.grid[3][7]).toBe(0);
 });
 
 test('receive attack in empty space', () => {
@@ -83,4 +76,15 @@ test('sink all ships', () => {
   expect(board.info.ships.length).toBe(0);
   expect(board.info.hits[0]).toEqual([3, 3]);
   expect(board.info.hits[1]).toEqual([7, 3]);
+});
+
+test('do not overwrite ship position while placing it on the board', () => {
+  const board = Gameboard(8);
+  const ship1 = Ship(1);
+  const ship2 = Ship(3);
+  board.placeShipAt(ship1, [2, 0]);
+  board.placeShipAt(ship2, [0, 0]);
+  expect(board.info.grid[0][0]).toBe(0);
+  expect(board.info.grid[1][0]).toBe(0);
+  expect(board.info.grid[2][0]).toBe(ship1);
 });

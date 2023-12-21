@@ -15,26 +15,34 @@ function Gameboard(gridSize) {
     grid,
   };
 
-  //   there needs to be a limit to the X and Y axis
-  // if (pos + shipSize) > boardSize place at (+edge - shipSize)
-  // if (pos - shipSize) < 0 place at (-edge)
-  // else place at pos
-  // loop from 0 to shipSize and traverse the array placing the ship in each slot
+  const isPlacementAvailable = (ship, pos, isVertical) => {
+    const x = pos[0];
+    const y = pos[1];
+
+    //  checks if ship exceeds x-axis or y-axis
+    if (!isVertical && x + ship.info.size > gridSize) return false;
+    if (isVertical && y + ship.info.size > gridSize) return false;
+
+    // checks if current placement overlaps an already placed ship
+    for (let i = 0; i < ship.info.size; i++) {
+      if (!isVertical && grid[x + i][y] !== 0) return false;
+      if (isVertical && grid[x][y + i] !== 0) return false;
+    }
+    return true;
+  };
+
   const placeShipAt = (ship, pos, isVertical = false) => {
-    let x = pos[0];
-    let y = pos[1];
-    if (!isVertical && x + ship.info.size > gridSize) {
-      x = gridSize - ship.info.size;
-    }
-    if (isVertical && y + ship.info.size > gridSize) {
-      y = gridSize - ship.info.size;
-    }
+    const x = pos[0];
+    const y = pos[1];
+    if (!isPlacementAvailable(ship, pos, isVertical)) return 'invalid';
+
     for (let i = 0; i < ship.info.size; i++) {
       if (!isVertical) {
         grid[x + i][y] = ship;
       } else grid[x][y + i] = ship;
     }
     info.ships.push(true);
+    return 'valid';
   };
 
   // Gameboards should have a receiveAttack function that takes a pair of coordinates, determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
