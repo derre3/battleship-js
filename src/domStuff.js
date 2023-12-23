@@ -22,10 +22,13 @@ function boardModule(size, player) {
   return { container, itemArr };
 }
 
-const main = document.querySelector('main');
-const gameContainer = document.querySelector('.game-container');
-const p1board = boardModule(10, 'p1');
-const p2board = boardModule(10, 'p2');
-gameContainer.append(p1board.container);
-gameContainer.append(p2board.container);
-main.append(gameContainer);
+function displayShips(itemArr, shipArr) {
+  shipArr.forEach((ship) => {
+    const x = ship[0];
+    const y = ship[1];
+
+    itemArr[x][y].classList.add('ship');
+  });
+}
+
+module.exports = { boardModule, displayShips };
