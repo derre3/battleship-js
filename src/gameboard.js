@@ -11,7 +11,7 @@ function Gameboard(gridSize) {
   const info = {
     hits: [],
     misses: [],
-    ships: [],
+    ships: 0,
     grid,
   };
 
@@ -32,17 +32,22 @@ function Gameboard(gridSize) {
   };
 
   const placeShipAt = (ship, pos, isVertical = false) => {
+    if (!isPlacementAvailable(ship, pos, isVertical)) return 'invalid';
     const x = pos[0];
     const y = pos[1];
-    if (!isPlacementAvailable(ship, pos, isVertical)) return 'invalid';
+    const shipPosArr = [];
 
     for (let i = 0; i < ship.info.size; i++) {
       if (!isVertical) {
         grid[x + i][y] = ship;
-      } else grid[x][y + i] = ship;
+        shipPosArr.push([x + i, y]);
+      } else {
+        grid[x][y + i] = ship;
+        shipPosArr.push([x, y + i]);
+      }
     }
-    info.ships.push(true);
-    return 'valid';
+    info.ships += 1;
+    return shipPosArr;
   };
 
   // Gameboards should have a receiveAttack function that takes a pair of coordinates, determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
@@ -57,7 +62,7 @@ function Gameboard(gridSize) {
     } else if (grid[x][y] !== 1 && grid[x][y] !== 0) {
       grid[x][y].hit();
       info.hits.push([x, y]);
-      if (grid[x][y].info.sunk === true) info.ships.pop();
+      if (grid[x][y].info.sunk === true) info.ships -= 1;
       grid[x][y] = 1;
     } else throw new Error('invalid-target');
   };

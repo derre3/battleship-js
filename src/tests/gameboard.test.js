@@ -16,7 +16,12 @@ test('place ship at coords [5,2]', () => {
 test('place ship size 3 at coords [3,3]', () => {
   const board = Gameboard(8);
   const ship = Ship(3);
-  board.placeShipAt(ship, [3, 3]);
+  const shipPosArr = board.placeShipAt(ship, [3, 3]);
+  expect(shipPosArr).toEqual([
+    [3, 3],
+    [4, 3],
+    [5, 3],
+  ]);
   expect(board.info.grid[3][3]).toBe(ship);
   expect(board.info.grid[4][3]).toBe(ship);
   expect(board.info.grid[5][3]).toBe(ship);
@@ -25,7 +30,12 @@ test('place ship size 3 at coords [3,3]', () => {
 test('place vertical ship size 3 at coords [3,3]', () => {
   const board = Gameboard(8);
   const ship = Ship(3);
-  board.placeShipAt(ship, [3, 3], true);
+  const shipPosArr = board.placeShipAt(ship, [3, 3], true);
+  expect(shipPosArr).toEqual([
+    [3, 3],
+    [3, 4],
+    [3, 5],
+  ]);
   expect(board.info.grid[3][3]).toBe(ship);
   expect(board.info.grid[3][4]).toBe(ship);
   expect(board.info.grid[3][5]).toBe(ship);
@@ -70,10 +80,12 @@ test('sink all ships', () => {
   const board = Gameboard(8);
   const ship = Ship(1);
   board.placeShipAt(ship, [3, 3]);
+  expect(board.info.ships).toBe(1);
   board.placeShipAt(ship, [7, 3]);
+  expect(board.info.ships).toBe(2);
   board.receiveAttack([3, 3]);
   board.receiveAttack([7, 3]);
-  expect(board.info.ships.length).toBe(0);
+  expect(board.info.ships).toBe(0);
   expect(board.info.hits[0]).toEqual([3, 3]);
   expect(board.info.hits[1]).toEqual([7, 3]);
 });
