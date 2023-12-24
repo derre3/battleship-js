@@ -63,7 +63,7 @@ main {
 
         &.ship {
           background-color: var(--ship-color);
-          border-color: var(--ship-color);
+          border-color: var(--secondary-color);
         }
         &.hit {
           background-color: var(--hit-color);
