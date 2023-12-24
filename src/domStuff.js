@@ -15,7 +15,6 @@ function boardModule(size, player) {
       const boardItem = document.createElement('div');
       boardItem.classList.add('board-item');
       boardColumn.append(boardItem);
-      //   boardItem.textContent = `${i},${j}`;
       itemArr[i][j] = boardItem;
     }
   }
@@ -26,9 +25,24 @@ function displayShips(itemArr, shipArr) {
   shipArr.forEach((ship) => {
     const x = ship[0];
     const y = ship[1];
-
     itemArr[x][y].classList.add('ship');
   });
 }
 
-module.exports = { boardModule, displayShips };
+// this should execute after every player attack
+function updateBoard(boardInfo, itemArr) {
+  if (boardInfo.misses.length > 0) {
+    const lastMiss = boardInfo.misses[boardInfo.misses.length - 1];
+    const x = lastMiss[0];
+    const y = lastMiss[1];
+    itemArr[x][y].classList.add('miss');
+  }
+  if (boardInfo.hits.length > 0) {
+    const lastHit = boardInfo.hits[boardInfo.hits.length - 1];
+    const x = lastHit[0];
+    const y = lastHit[1];
+    itemArr[x][y].classList.add('hit');
+  }
+}
+
+module.exports = { boardModule, displayShips, updateBoard };
