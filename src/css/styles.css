@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --primary-color: #131339;
   --primary-offcolor: #000000;
@@ -23,8 +27,8 @@ header {
   align-items: center;
 
   & h1 {
-    font-size: 6rem;
-    padding: 2rem;
+    font-size: 4rem;
+    margin-top: 12px;
     color: var(--text-color);
   }
 }
@@ -32,51 +36,92 @@ header {
 main {
   background-color: var(--primary-color);
   flex-grow: 1;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  & .info-box {
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    border-radius: 7px;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
+    gap: 0.5rem;
+    color: var(--secondary-color);
+
+    & .info-text {
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    & .play-button {
+      background-color: var(--secondary-color);
+      color: var(--primary-color);
+      border: 1px solid var(--secondary-color);
+      border-radius: 3px;
+      padding: 4px;
+      margin: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  }
 
   & .game-container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
-  }
-
-  & .board-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 4px solid var(--secondary-color);
-    border-radius: 5px;
-    background-color: var(--primary-offcolor);
-    & .board-column {
+    cursor: crosshair;
+    & .board-container {
       display: flex;
-      flex-direction: column-reverse;
-      & .board-item {
+      justify-content: center;
+      align-items: center;
+      border: 4px solid var(--secondary-color);
+      border-radius: 5px;
+      background-color: var(--primary-offcolor);
+      & .board-column {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-        border: 1px solid var(--secondary-offcolor);
-        background-color: var(--primary-color);
-        transition: opacity 220ms;
+        flex-direction: column-reverse;
+        & .board-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+          height: 50px;
+          border: 1px solid var(--secondary-offcolor);
+          background-color: var(--primary-color);
+          transition: opacity 220ms;
 
-        &.ship {
-          background-color: var(--ship-color);
-          border-color: var(--secondary-color);
-        }
-        &.hit {
-          background-color: var(--hit-color);
-          border-color: var(--hit-color);
-        }
-        &.miss {
-          background-color: var(--miss-color);
-          border-color: var(--miss-color);
-        }
-        &:hover {
-          opacity: 0.66;
+          &.ship {
+            background-color: var(--ship-color);
+            border-color: var(--secondary-color);
+          }
+          &.hit {
+            background-color: var(--hit-color);
+            border-color: var(--hit-color);
+          }
+          &.miss {
+            background-color: var(--miss-color);
+            border-color: var(--miss-color);
+          }
+          &:hover {
+            opacity: 0.66;
+          }
         }
       }
     }
   }
+}
+
+.unfocused {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
 }
