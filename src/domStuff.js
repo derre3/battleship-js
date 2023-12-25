@@ -45,4 +45,29 @@ function updateBoard(boardInfo, itemArr) {
   }
 }
 
-module.exports = { boardModule, displayShips, updateBoard };
+function displayEndResult(winner) {
+  const playButton = document.querySelector('.play-button');
+  const infoText = document.querySelectorAll('.info-text');
+
+  playButton.classList.toggle('hidden');
+  if (winner === 1) {
+    infoText[0].textContent = 'You destroyed the opposing force ships!';
+    infoText[1].textContent = 'Congratulations!';
+  } else {
+    infoText[0].textContent = 'All your ships are destroyed!';
+    infoText[1].textContent = 'You lose';
+  }
+}
+
+function updateShipCounter(ships) {
+  const infoText = document.querySelectorAll('.info-text');
+  infoText[1].textContent = `${ships} ships remaining`;
+}
+
+module.exports = {
+  boardModule,
+  displayShips,
+  updateBoard,
+  displayEndResult,
+  updateShipCounter,
+};

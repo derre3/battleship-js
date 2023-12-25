@@ -4,6 +4,8 @@ const { Ship } = require('./ship');
 const { boardModule } = require('./domStuff');
 const { displayShips } = require('./domStuff');
 const { updateBoard } = require('./domStuff');
+const { displayEndResult } = require('./domStuff');
+const { updateShipCounter } = require('./domStuff');
 
 // create boards
 const boardSize = 10;
@@ -40,10 +42,13 @@ boardP2DOM.itemArr.forEach((column) => {
       playerOne.playTurn([x, y]);
       // board is updated in the DOM
       updateBoard(boardP2.info, boardP2DOM.itemArr);
+      updateShipCounter(boardP2.info.ships);
       // check if all ships are destroyed on boardP2
       if (boardP2.info.ships === 0) {
         // if true return playerOne victory
-        alert('Player One Wins');
+        displayEndResult(1);
+        gameContainer.classList.add('unfocused');
+        return;
       }
       // else playerTwo plays the round attacking boardP1
       playerTwo.playTurn();
@@ -52,7 +57,8 @@ boardP2DOM.itemArr.forEach((column) => {
       // check if all ships are destroyed on boardP1
       if (boardP1.info.ships === 0) {
         // if true return playerTwo victory
-        alert('Player Two Wins');
+        displayEndResult(2);
+        gameContainer.classList.add('unfocused');
       }
     });
   });
