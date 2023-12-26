@@ -1,9 +1,8 @@
-/* eslint-disable no-plusplus */
 function Gameboard(gridSize) {
   const grid = [];
-  for (let i = 0; i < gridSize; i++) {
+  for (let i = 0; i < gridSize; i += 1) {
     grid[i] = [];
-    for (let j = 0; j < gridSize; j++) {
+    for (let j = 0; j < gridSize; j += 1) {
       grid[i][j] = 0;
     }
   }
@@ -15,30 +14,52 @@ function Gameboard(gridSize) {
     grid,
   };
 
-  const isPlacementAvailable = (ship, pos, isVertical) => {
-    const x = pos[0];
-    const y = pos[1];
+  const getRandomPos = () => [
+    Math.floor(Math.random() * grid.length),
+    Math.floor(Math.random() * grid.length),
+  ];
+
+  const getRandomAxis = () => Math.floor(Math.random() * 4);
+
+  const isPlacementAvailable = (ship, pos, isHorizontal) => {
+    const [x, y] = [pos[0], pos[1]];
 
     //  checks if ship exceeds x-axis or y-axis
-    if (!isVertical && x + ship.info.size > gridSize) return false;
-    if (isVertical && y + ship.info.size > gridSize) return false;
+    if (isHorizontal && x + ship.info.size > gridSize) return false;
+    if (!isHorizontal && y + ship.info.size > gridSize) return false;
 
     // checks if current placement overlaps an already placed ship
-    for (let i = 0; i < ship.info.size; i++) {
-      if (!isVertical && grid[x + i][y] !== 0) return false;
-      if (isVertical && grid[x][y + i] !== 0) return false;
+    for (let i = 0; i < ship.info.size; i += 1) {
+      if (isHorizontal && grid[x + i][y] !== 0) return false;
+      if (!isHorizontal && grid[x][y + i] !== 0) return false;
     }
     return true;
   };
 
-  const placeShipAt = (ship, pos, isVertical = false) => {
-    if (!isPlacementAvailable(ship, pos, isVertical)) return 'invalid';
-    const x = pos[0];
-    const y = pos[1];
+  const getValidPos = (ship, isHorizontal) => {
+    let pos = getRandomPos();
+    while (!isPlacementAvailable(ship, pos, isHorizontal)) {
+      pos = getRandomPos();
+    }
+    return pos;
+  };
+
+  const placeShipAt = (ship, pos, isHorizontal) => {
+    let x;
+    let y;
+    if (pos === undefined) {
+      // eslint-disable-next-line no-param-reassign
+      isHorizontal = getRandomAxis();
+      const randomPos = getValidPos(ship, isHorizontal);
+      [x, y] = [randomPos[0], randomPos[1]];
+    } else {
+      if (!isPlacementAvailable(ship, pos, isHorizontal)) return 'invalid';
+      [x, y] = [pos[0], pos[1]];
+    }
     const shipPosArr = [];
 
-    for (let i = 0; i < ship.info.size; i++) {
-      if (!isVertical) {
+    for (let i = 0; i < ship.info.size; i += 1) {
+      if (isHorizontal !== 0) {
         grid[x + i][y] = ship;
         shipPosArr.push([x + i, y]);
       } else {
@@ -54,8 +75,7 @@ function Gameboard(gridSize) {
   // Gameboards should keep track of missed attacks so they can display them properly.
   // Gameboards should be able to report whether or not all of their ships have been sunk.
   const receiveAttack = (pos) => {
-    const x = pos[0];
-    const y = pos[1];
+    const [x, y] = [pos[0], pos[1]];
     if (grid[x][y] === 0) {
       info.misses.push([x, y]);
       grid[x][y] = 1;

@@ -1,17 +1,15 @@
-/* eslint-disable no-plusplus */
-
 function boardModule(size, player) {
   const itemArr = [];
   const container = document.createElement('div');
   container.id = player;
   container.classList.add('board-container');
 
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     const boardColumn = document.createElement('div');
     boardColumn.classList.add('board-column');
     container.append(boardColumn);
     itemArr[i] = [];
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size; j += 1) {
       const boardItem = document.createElement('div');
       boardItem.classList.add('board-item');
       boardColumn.append(boardItem);
@@ -23,8 +21,7 @@ function boardModule(size, player) {
 
 function displayShips(itemArr, shipArr) {
   shipArr.forEach((ship) => {
-    const x = ship[0];
-    const y = ship[1];
+    const [x, y] = [ship[0], ship[1]];
     itemArr[x][y].classList.add('ship');
   });
 }
@@ -46,10 +43,8 @@ function updateBoard(boardInfo, itemArr) {
 }
 
 function displayEndResult(winner) {
-  const playButton = document.querySelector('.play-button');
   const infoText = document.querySelectorAll('.info-text');
 
-  playButton.classList.toggle('hidden');
   if (winner === 1) {
     infoText[0].textContent = 'You destroyed the opposing force ships!';
     infoText[1].textContent = 'Congratulations!';
