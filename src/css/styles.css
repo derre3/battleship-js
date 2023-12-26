@@ -58,7 +58,7 @@ main {
       font-size: 1.3rem;
     }
 
-    & .play-button {
+    & button {
       background-color: var(--secondary-color);
       color: var(--primary-color);
       border: 1px solid var(--secondary-color);
@@ -67,6 +67,10 @@ main {
       margin: 8px;
       font-size: 1rem;
       cursor: pointer;
+
+      &.clicked {
+        background-color: yellow;
+      }
     }
   }
 
@@ -114,7 +118,17 @@ main {
         }
       }
     }
+    & .board-container.smaller {
+      & .board-item {
+        width: 35px;
+        height: 35px;
+      }
+    }
   }
+}
+
+.test {
+  background-color: purple;
 }
 
 .unfocused {
