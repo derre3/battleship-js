@@ -15,14 +15,11 @@ function gameLoop() {
   // query selectors
   const infoText = document.querySelectorAll('.info-text');
   const infoBox = document.querySelector('.info-box');
-  // const playButton = document.querySelector('#play');
-  // const replayButton = document.querySelector('#replay');
-  // const rotateButton = document.querySelector('#rotate');
   const playButton = document.createElement('button');
   const replayButton = document.createElement('button');
   const rotateButton = document.createElement('button');
-  playButton.textContent = 'Play!';
-  replayButton.textContent = 'Play Again!';
+  playButton.textContent = 'Start';
+  replayButton.textContent = 'Reset';
   rotateButton.textContent = 'Horizontal';
   playButton.id = 'play';
   replayButton.id = 'replay';
@@ -44,7 +41,6 @@ function gameLoop() {
   rotateButton.classList.remove('hidden');
 
   gameContainer.append(boardP1DOM.container);
-  // gameContainer.append(boardP2DOM.container); // REMOVE AFTER DEBUG
   // create players
   const playerOne = Player(boardP2);
   const playerTwo = Player(boardP1);
@@ -99,7 +95,7 @@ function gameLoop() {
             displayShips(boardP1DOM.itemArr, s3);
             shipPlacerCounter += 1;
             infoText[0].textContent = 'Your ships are in position.';
-            infoText[1].textContent = 'Press Play to start!';
+            infoText[1].textContent = 'Press start';
             playButton.classList.remove('hidden');
             playButton.classList.remove('hidden');
             rotateButton.classList.add('hidden');
@@ -145,6 +141,7 @@ function gameLoop() {
   playButton.addEventListener('click', () => {
     gameContainer.append(boardP2DOM.container);
     playButton.classList.add('hidden');
+    replayButton.classList.remove('hidden');
     boardP1DOM.container.classList.add('smaller');
     boardP1DOM.container.classList.add('unfocused');
     infoText[0].textContent = 'Destroy the opposing force ships!';
