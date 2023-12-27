@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@300;600;900&display=swap');
+
 * {
   box-sizing: border-box;
 }
@@ -27,7 +29,9 @@ header {
   align-items: center;
 
   & h1 {
-    font-size: 4rem;
+    font-family: 'Big Shoulders Stencil Text', sans-serif;
+    font-weight: 600;
+    font-size: 5rem;
     margin-top: 12px;
     color: var(--text-color);
   }
@@ -52,15 +56,23 @@ main {
     gap: 0.5rem;
     color: var(--primary-color);
     background-color: var(--secondary-color);
-    padding: 16px;
-    width: 400px;
+    padding: 8px;
+    width: 500px;
 
     & .info-text {
-      font-weight: 700;
+      font-family: 'Big Shoulders Stencil Text', sans-serif;
+      font-weight: 600;
       font-size: 1.3rem;
+
+      &:nth-child(1) {
+        font-size: 1.5rem;
+        font-weight: 900;
+      }
     }
 
     & button {
+      font-family: 'Big Shoulders Stencil Text', sans-serif;
+      font-weight: 900;
       background-color: var(--primary-color);
       color: var(--secondary-color);
       border: 1px solid var(--primary-color);
@@ -69,11 +81,6 @@ main {
       margin: 8px;
       font-size: 1rem;
       cursor: pointer;
-
-      /* &.clicked {
-        background-color: var(--secondary-color);
-        color: var(--primary-color);
-      } */
     }
   }
 
@@ -90,6 +97,7 @@ main {
       border: 4px solid var(--secondary-color);
       border-radius: 5px;
       background-color: var(--primary-offcolor);
+      transition: opacity 200ms;
       & .board-column {
         display: flex;
         flex-direction: column-reverse;
@@ -101,7 +109,9 @@ main {
           height: 50px;
           border: 1px solid var(--secondary-offcolor);
           background-color: var(--primary-color);
-          transition: opacity 220ms;
+          transition:
+            opacity 250ms,
+            background-color 300ms;
 
           &.ship {
             background-color: var(--ship-color);
@@ -131,7 +141,7 @@ main {
 }
 
 .unfocused {
-  opacity: 0.5;
+  opacity: 0.6;
   pointer-events: none;
 }
 
