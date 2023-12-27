@@ -123,17 +123,23 @@ function gameLoop() {
           displayEndResult(1);
           return;
         }
-        // else playerTwo plays the round attacking boardP1
-        playerTwo.playTurn();
-        // board is updated in the DOM
-        updateBoard(boardP1.info, boardP1DOM.itemArr);
-        // check if all ships are destroyed on boardP1
-        if (boardP1.info.ships === 0) {
-          // if true return playerTwo victory
-          gameContainer.classList.add('unfocused');
-          replayButton.classList.remove('hidden');
-          displayEndResult(2);
-        }
+
+        boardP2DOM.container.classList.add('unfocused');
+
+        setTimeout(() => {
+          // else playerTwo plays the round attacking boardP1
+          playerTwo.playTurn();
+          // board is updated in the DOM
+          updateBoard(boardP1.info, boardP1DOM.itemArr);
+          // check if all ships are destroyed on boardP1
+          boardP2DOM.container.classList.remove('unfocused');
+          if (boardP1.info.ships === 0) {
+            // if true return playerTwo victory
+            gameContainer.classList.add('unfocused');
+            replayButton.classList.remove('hidden');
+            displayEndResult(2);
+          }
+        }, 750);
       });
     });
   });
@@ -155,7 +161,6 @@ function gameLoop() {
   });
 
   rotateButton.addEventListener('click', () => {
-    rotateButton.classList.toggle('clicked');
     if (rotateShip) rotateButton.textContent = 'Vertical';
     if (!rotateShip) rotateButton.textContent = 'Horizontal';
     rotateShip = rotateShip ? 0 : 1;
