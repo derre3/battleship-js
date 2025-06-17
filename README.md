@@ -1,7 +1,7 @@
 # 🚢 Battleship Game (JavaScript)  
-Projeto desenvolvido no **The Odin Project** | Project developed at **The Odin Project**  
+Projeto desenvolvido para [**The Odin Project**](https://www.theodinproject.com/lessons/node-path-javascript-battleship) | Project developed for [**The Odin Project**](https://www.theodinproject.com/lessons/node-path-javascript-battleship)
 
-[English](#en) | [Português Brasileiro](#pt-br)  
+[EN-US](#en) | [PT-BR](#pt-br)  
 
 ---
 
@@ -30,7 +30,7 @@ graph LR
 3. **Edge Case Coverage**:  
    Handling invalid attacks mirrors testing boundary conditions in forms/payment flows  
 
-▶️ **[Play Live Version](https://derre3.github.io/Battleship/)**  
+▶️ **[Play Live Version](https://derre3.github.io/battleship-js/)**  
 
 ---
 
@@ -59,13 +59,9 @@ graph LR
 3. **Cobertura de Casos Extremos**:  
    Tratamento de ataques inválidos espelha testes de condições limite em formulários/fluxos de pagamento  
 
-▶️ **[Jogar Versão Online](https://derre3.github.io/Battleship/)**  
+▶️ **[Jogar Versão Online](https://derre3.github.io/battleship-js/)**  
 
 ---
 
 ## 🔧 Technical Environment | Ambiente Técnico  
 `JavaScript` `Webpack` `Jest` `HTML5` `CSS3`  
-
-## 📬 Contact | Contato  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](seu_linkedin)  
-[derre3@github.com](mailto:seu_email@exemplo.com)
